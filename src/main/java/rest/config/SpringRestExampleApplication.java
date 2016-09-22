@@ -10,8 +10,19 @@ import org.springframework.context.annotation.ComponentScan;
 public class SpringRestExampleApplication {
     
 	public static void main(String[] args) {
-		ApplicationContext context = SpringApplication.run(SpringRestExampleApplication.class, args);
-
+		SpringApplication.run(SpringRestExampleApplication.class, args);
+	}
+	
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("http://localhost:8090").
+						allowedMethods("PUT", "DELETE", "GET", "POST").maxAge(3600)
+				.allowedHeaders("x-requested-with");
+			}
+		};
 	}
 
 }
